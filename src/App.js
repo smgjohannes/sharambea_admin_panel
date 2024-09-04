@@ -1,25 +1,57 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Dashboard from './components/Dashboard';
+import Requests from './components/Requests';
+import NewProperty from './components/NewProperty';
+import Advertisement from './components/Advertisement';
+import PrivateRoute from './components/PrivateRoute';
+import Login from './components/Login';
+import Layout from './components/Layout';
+import EditProfile from './pages/EditProfile';
+import Message from './pages/Message';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* Public Route */}
+        <Route path='/' element={<Login />} />
+
+        {/* Private Routes with shared Layout */}
+        <Route
+          path='/*'
+          element={
+            <PrivateRoute>
+              <Layout>
+                <Navbar toggleSidebar={toggleSidebar} />
+                <Sidebar
+                  sidebarOpen={sidebarOpen}
+                  closeSidebar={toggleSidebar}
+                />
+                <Routes>
+                  <Route path='/dashboard' element={<Dashboard />} />
+                  <Route path='/requests' element={<Requests />} />
+                  <Route path='/new-property' element={<NewProperty />} />
+                  <Route path='/advertisement' element={<Advertisement />} />
+                  <Route path='/edit-profile' element={<EditProfile />} />
+                  <Route path='/message' element={<Message />} />
+                </Routes>
+              </Layout>
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

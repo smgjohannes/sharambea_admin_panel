@@ -1,0 +1,80 @@
+.property-card {
+  position: relative;
+  width: 284px;
+
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.property-description {
+  display: flex;
+  gap: 10px;
+}
+.property-description h3 {
+  color: gray;
+  font-size: 18px;
+  font-weight: 500;
+}
+.property-info {
+  padding: 10px;
+  position: relative;
+}
+
+.menu-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.menu-icon {
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.menu {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width: 100px;
+}
+
+.menu-item {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.menu-item .view {
+  color: green;
+}
+.menu-item .edit {
+  color: blue;
+}
+.menu-item .delete {
+  color: red;
+}
+.menu-item:hover {
+  background-color: #f1f1f1;
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .property-card {
+    position: relative;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+}

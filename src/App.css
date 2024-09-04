@@ -1,38 +1,125 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row;
+  height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+.main-content {
+  display: flex;
+  flex-direction: row;
+  margin-top: 100px; /* Adjusted to account for the fixed navbar */
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.content {
+  padding: 20px;
+  margin: 10px 20px 20px 268px;
+  flex: 1;
+  border: 1px rgb(109, 107, 107, 0.1) solid;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+  .main-content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 120px; /* Adjusted to account for the fixed navbar */
+    width: 100%;
+  }
+  .sidebar {
+    width: 40%;
+  }
+  .navbar-logo {
+    font-size: 24px;
+    font-weight: bold;
+    object-fit: cover;
+    height: 70px;
+    margin-bottom: 15px;
+  }
+  .navbar-logo img {
+    font-size: 24px;
+    font-weight: bold;
+    object-fit: cover;
+    height: 60px;
+  }
+  .navbar-icons .badge,
+  .sidebar .request-count {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    position: absolute;
+
+    right: 27px;
+  }
+
+  .content {
+    padding: 10px;
+    max-width: 1045px;
+    padding: 20px;
+    margin: 20px;
+    flex: 1;
+    border: 1px rgb(109, 107, 107, 0.1) solid;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-search input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-logo {
+    margin-bottom: 10px;
+  }
+
+  .navbar-search input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .navbar-icons {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .sidebar {
+    padding: 10px;
+  }
+
+  .sidebar ul {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .sidebar ul li {
+    margin: 0;
+  }
+
+  .content {
+    padding: 10px;
   }
 }

@@ -1,0 +1,27 @@
+.dashboard-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.dashboard-card-title {
+  font-size: 1.2em;
+  margin: 8px 0;
+}
+.dashboard-card-title--count {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-card-count {
+  font-size: 2em;
+  margin: 8px 0;
+}
+
+.dashboard-card-icon {
+  font-size: 2em;
+  margin-top: 0;
+}
