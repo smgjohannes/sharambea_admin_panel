@@ -1,8 +1,27 @@
-import React from 'react';
-import '../styles/PropertyDetailsModal.css'; // Keep your custom styles if needed.
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import '../styles/PropertyDetailsModal.css';
 
 const PropertyDetailsModal = ({ show, onClose, property }) => {
-  if (!show) return null;
+  useEffect(() => {
+    if (!show || !property) return;
+    const token = localStorage.getItem('token');
+    const interestedBuyers = async () => {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:4343/api/v1/properties/${property.id}/interestedBuyer`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching property:', error);
+      }
+    };
+
+    interestedBuyers();
+  }, [show, property]);
 
   return (
     <div className={`w3-modal ${show ? 'w3-show' : 'w3-hide'}`}>

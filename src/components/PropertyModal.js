@@ -115,7 +115,7 @@ const PropertyModal = ({ show, onClose, onSubmit, propertyData }) => {
       <div className='w3-modal-overlay' onClick={onClose}></div>
       <div className='w3-modal-content w3-animate-top w3-card-4'>
         <header className='w3-container w3-dark-grey'>
-          <spangit
+          <span
             onClick={onClose}
             className='w3-button w3-display-topright w3-margin-top w3-red'>
             &times;

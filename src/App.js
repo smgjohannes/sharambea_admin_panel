@@ -11,7 +11,11 @@ import Login from './components/Login';
 import Layout from './components/Layout';
 import EditProfile from './pages/EditProfile';
 import Message from './pages/Message';
+import ViewProperty from './pages/properties/view';
+import EditProperty from './pages/properties/edit';
+import CreateProperty from './pages/properties/create';
 import './App.css';
+import Properties from './pages/properties/properties';
 
 const App = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,6 +48,10 @@ const App = () => {
                   <Route path='/advertisement' element={<Advertisement />} />
                   <Route path='/edit-profile' element={<EditProfile />} />
                   <Route path='/message' element={<Message />} />
+                  <Route path='/properties' element={<Properties />} />
+                  <Route path='/view/:propertyId' element={<ViewProperty />} />
+                  <Route path='/edit/:propertyId' element={<EditProperty />} />
+                  <Route path='/create_property' element={<CreateProperty />} />
                 </Routes>
               </Layout>
             </PrivateRoute>

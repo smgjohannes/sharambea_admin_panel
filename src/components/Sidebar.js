@@ -41,11 +41,11 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
           </Link>
         </li>
         <li>
-          <Link to='/advertisement' onClick={closeSidebar}>
+          <Link to='/properties' onClick={closeSidebar}>
             <span className='icon'>
               <RiAdvertisementLine />
             </span>{' '}
-            Your Advertisements
+            Properties
           </Link>
         </li>
         <li>

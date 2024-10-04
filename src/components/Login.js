@@ -27,8 +27,10 @@ function Login() {
           values
         );
         if (response.data.success) {
+          const user = response.data.user;
           const token = response.data.token.access_token;
           localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(user));
           navigate('/dashboard');
         } else {
           setErrors({ server: response.data.message });

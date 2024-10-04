@@ -3,7 +3,7 @@ import '../styles/Navbar.css';
 import { IoMdMenu, IoIosNotifications } from 'react-icons/io';
 import { MdOutlineMessage } from 'react-icons/md';
 import logo from '../assets/images/logo3.png';
-import chelsea from '../assets/images/copyche.png';
+// import chelsea from '../assets/images/copyche.png';
 
 const Navbar = ({ toggleSidebar }) => {
   const [notificationCounts, setNotificationCounts] = useState({
@@ -73,11 +73,11 @@ const Navbar = ({ toggleSidebar }) => {
           )}
         </i>
         <i className='icon-profile'>
-          <img
-            src={profileImage || chelsea} // Fallback to default avatar if profileImage is not available
+          {/* <img
+            // src={profileImage || chelsea}
             alt='User Avatar'
             className='avatar'
-          />
+          /> */}
           <p>Welcome, {userName}</p>
         </i>
       </div>

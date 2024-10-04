@@ -1,46 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaEllipsisV, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
-import PropertyDetailsModal from './PropertyDetailsModal';
-import PropertyFormModal from './PropertyModal';
+import { useNavigate } from 'react-router-dom';
 import '../styles/PropertyCard.css';
 
 const PropertyCard = ({ property, onDelete }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showPropertyDetailsModal, setShowPropertyDetailsModal] =
-    useState(false);
-  const [showFormModal, setShowFormModal] = useState(false);
-  const [propertyToEdit, setPropertyToEdit] = useState(null);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   const handleView = () => {
-    setShowPropertyDetailsModal(true);
+    navigate(`/view/${property.id}`); // Navigate to view page
     setMenuOpen(false);
   };
 
   const handleEdit = () => {
-    setPropertyToEdit(property);
-    setShowFormModal(true);
+    navigate(`/edit/${property.id}`); // Navigate to edit page
     setMenuOpen(false);
   };
 
   const handleDelete = () => {
     onDelete(property.id);
     setMenuOpen(false);
-  };
-
-  const handleClosePropertyDetailsModal = () => {
-    setShowPropertyDetailsModal(false);
-  };
-
-  const handleSaveProperty = (updatedProperty) => {
-    // Call your API or update the state to save the updated property details
-    console.log('Saving property:', updatedProperty);
-    // Refresh the property list if needed
-    setShowFormModal(false);
   };
 
   useEffect(() => {
@@ -82,21 +66,11 @@ const PropertyCard = ({ property, onDelete }) => {
           <h3>{property.suburb}</h3>
         </div>
         <div className='property-description'>
-          <h3>{property.property_description}</h3>
+          <h3>{property.description}</h3>
         </div>
       </div>
-      <PropertyDetailsModal
-        show={showPropertyDetailsModal}
-        onClose={handleClosePropertyDetailsModal}
-        property={property}
-      />
-      <PropertyFormModal
-        show={showFormModal}
-        onClose={() => setShowFormModal(false)}
-        propertyData={propertyToEdit}
-        onSubmit={handleSaveProperty} // Update or add the property
-      />
     </div>
   );
 };
+
 export default PropertyCard;

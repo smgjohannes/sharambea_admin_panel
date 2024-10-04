@@ -104,7 +104,7 @@ const Requests = () => {
       <table>
         <thead>
           <tr>
-            <th>Name</th>
+            {/* <th>Name</th> */}
             <th>Phone</th>
             <th>Pro Type</th>
             <th>Cat Type</th>
@@ -117,7 +117,7 @@ const Requests = () => {
         <tbody>
           {filteredRequests.map((request) => (
             <tr key={request.id}>
-              <td onClick={() => openModal(request)}>{request.name}</td>
+              {/* <td onClick={() => openModal(request)}>{request.name}</td> */}
               <td onClick={() => openModal(request)}>{request.phone}</td>
               <td onClick={() => openModal(request)}>
                 {request.property_type}
