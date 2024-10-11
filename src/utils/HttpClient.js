@@ -1,35 +1,79 @@
 import axios from 'axios';
 import config from '../config';
+import { Token } from './Token';
 
 const MAX_RETRY = 3;
 
+const client = axios.create();
+
+client.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (
+      error.response &&
+      (error.response.status === 429 || error.response.status === 403)
+    ) {
+      console.log('Something went wrong');
+    }
+
+    if (
+      error.response &&
+      error.response.status &&
+      error.response.status !== 412 &&
+      error.response.status !== 422 &&
+      error.response.status > 399 &&
+      error.response.status < 500
+    ) {
+      console.log(error.response.data.message || 'error_title');
+    }
+
+    if (error.response && error.response.status === 500) {
+      console.log('error_title');
+    }
+
+    console.error(error);
+
+    return Promise.reject(error);
+  }
+);
+
 export class HttpClient {
-  constructor(token) {
-    this.token = token;
+  constructor() {
+    this.token = new Token();
     this.baseUrl = config.baseUrl || window.location.origin;
   }
+  getAxiosHeaders(url) {
+    const language = localStorage.getItem('X-LOCALE');
+    const headers = {};
 
-  getAxiosHeaders() {
-    const headers = {
-      'Content-Type': 'application/json',
-    };
-    if (this.token.getAccessToken()) {
+    const unprotectedRoutes = ['/properties/all'];
+
+    if (!unprotectedRoutes.includes(url) && this.token.getAccessToken()) {
       headers.authorization = `Bearer ${this.token.getAccessToken()}`;
     }
+
+    if (language) {
+      headers['Accept-Language'] = language;
+    }
+
     return headers;
   }
+  // getAxiosHeaders() {
+  //   const language = localStorage.getItem('X-LOCALE');
+  //   const headers = {};
 
-  async refreshAccessToken() {
-    const { data } = await axios({
-      baseURL: this.baseUrl,
-      url: 'https://sharambeaapi-3cdb242a1398.herokuapp.com/api/v1/access_token',
-      method: 'post',
-      data: {
-        refresh_token: this.token.getRefreshToken(),
-      },
-    });
-    this.token.setAccessToken(data.access_token);
-  }
+  //   if (this.token.getAccessToken()) {
+  //     headers.authorization = `Bearer ${this.token.getAccessToken()}`;
+  //   }
+
+  //   if (language) {
+  //     headers['Accept-Language'] = language;
+  //   }
+
+  //   return headers;
+  // }
 
   async executeQuery(method, url, query, body, retryCount = 0) {
     if (retryCount > MAX_RETRY) {
@@ -48,7 +92,6 @@ export class HttpClient {
       return response;
     } catch (e) {
       if (e.response && e.response.status === 401) {
-        await this.refreshAccessToken();
         return this.executeQuery(method, url, query, body, retryCount + 1);
       }
       throw e;

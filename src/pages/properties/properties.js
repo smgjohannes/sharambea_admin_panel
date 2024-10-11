@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import PropertyCard from '../../components/PropertyCard';
 import PropertyModal from '../../components/PropertyModal';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
+import { HttpClient } from '../../utils/HttpClient';
 const Properties = () => {
   const [properties, setProperties] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const navigate = useNavigate(); // Get navigate object for navigation
   useEffect(() => {
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
     const fetchProperties = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/properties/all?search=${user.id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await httpClient.get(`/properties?search=${user.id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         console.log(response.data);
         setProperties(response.data);
       } catch (error) {
@@ -30,9 +29,10 @@ const Properties = () => {
   }, []);
 
   const handleDelete = async (id) => {
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://127.0.0.1:4343/api/v1/properties/${id}`, {
+      await httpClient.delete(`/properties/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Set the authorization header
         },
@@ -44,20 +44,21 @@ const Properties = () => {
   };
 
   const handleAddProperty = () => {
-    setSelectedProperty(null); // Clear selected property
-    setShowModal(true); // Open modal
+    setSelectedProperty(null);
+    setShowModal(true);
   };
 
   const handleEditProperty = (property) => {
-    setSelectedProperty(property); // Set the property to be edited
-    setShowModal(true); // Open modal
+    setSelectedProperty(property);
+    setShowModal(true);
   };
 
   const handleModalClose = () => {
-    setShowModal(false); // Close modal
+    setShowModal(false);
   };
 
   const handleFormSubmit = async (property) => {
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
 
     const config = {
@@ -69,8 +70,8 @@ const Properties = () => {
     if (selectedProperty) {
       // Update logic
       try {
-        const response = await axios.put(
-          `http://127.0.0.1:4343/api/v1/properties/${selectedProperty.id}`,
+        const response = await httpClient.post(
+          `/properties/${selectedProperty.id}`,
           property,
           config
         );
@@ -85,11 +86,7 @@ const Properties = () => {
     } else {
       // Add logic
       try {
-        const response = await axios.post(
-          'http://127.0.0.1:4343/api/v1/properties',
-          property,
-          config
-        );
+        const response = await httpClient.post('/properties', property, config);
         setProperties([...properties, response.data]);
       } catch (error) {
         console.error('Error adding property', error);

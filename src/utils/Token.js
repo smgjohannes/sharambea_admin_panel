@@ -1,10 +1,7 @@
-import { Dispatcher } from './Dispatcher';
-
 class Token {
   constructor() {
     this.user = null;
     this.initialized = false;
-    this.dispatcher = new Dispatcher();
   }
 
   init() {
@@ -46,6 +43,7 @@ class Token {
   }
 
   getAccessToken() {
+    this.getUser();
     if (this.user) {
       return this.user.access_token;
     }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import DashboardCard from './DashboardCard';
 
 import '../styles/Dashboard.css';
+import { HttpClient } from '../utils/HttpClient';
 
 const Dashboard = () => {
   const [counts, setCounts] = useState({
@@ -13,15 +13,13 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
     const fetchProperties = async () => {
       try {
-        const response = await axios.get(
-          'http://127.0.0.1:4343/api/v1/properties',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await httpClient.get('/properties', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const properties = response.data;
 
         // Calculate counts for each category

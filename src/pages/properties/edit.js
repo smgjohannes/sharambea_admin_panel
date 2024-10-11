@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
 import { useParams } from 'react-router-dom';
+import { HttpClient } from '../../utils/HttpClient';
 
 const EditProperty = () => {
   const { propertyId } = useParams();
@@ -8,13 +9,13 @@ const EditProperty = () => {
 
   // Fetch property data
   useEffect(() => {
+    const httpClient = new HttpClient();
     const fetchProperty = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/properties/${propertyId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        const response = await httpClient.get(`/properties/${propertyId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setProperty(response.data);
       } catch (error) {
         console.error('Error fetching property:', error);
@@ -26,14 +27,13 @@ const EditProperty = () => {
 
   // Handle property save
   const handleSave = async (e) => {
+    const httpClient = new HttpClient();
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(
-        `http://127.0.0.1:4343/api/v1/properties/${propertyId}`,
-        property,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await httpClient.patch(`/properties/${propertyId}`, property, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       // Handle successful save (e.g., navigate back to property list)
     } catch (error) {
       console.error('Error saving property:', error);

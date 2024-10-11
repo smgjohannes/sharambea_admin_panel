@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import { formatDateTime } from './CommonFunctions';
 import RequestModal from './RequestModal';
 import '../styles/Requests.css';
+import { HttpClient } from '../utils/HttpClient';
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
@@ -12,6 +13,7 @@ const Requests = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   useEffect(() => {
+    const httpClient = new HttpClient();
     const fetchRequests = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -23,10 +25,8 @@ const Requests = () => {
 
         console.log(`Fetching requests with params: ${queryParams}`);
 
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/requests${
-            queryParams ? `?${queryParams}` : ''
-          }`,
+        const response = await httpClient.get(
+          `/requests${queryParams ? `?${queryParams}` : ''}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -61,9 +61,10 @@ const Requests = () => {
   };
 
   const handleDelete = async (id) => {
+    const httpClient = new HttpClient();
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://127.0.0.1:4343/api/v1/requests/${id}`, {
+      await httpClient.delete(`http://127.0.0.1:4343/api/v1/requests/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setRequests(requests.filter((request) => request.id !== id));

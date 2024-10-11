@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/EditProfile.css'; // Add your CSS file
 import { useNavigate } from 'react-router-dom';
+import { HttpClient } from '../utils/HttpClient';
 
 const EditProfile = () => {
   const [profilePicture, setProfilePicture] = useState(null);
@@ -17,6 +18,7 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('name', name);
@@ -29,11 +31,11 @@ const EditProfile = () => {
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:4343/api/v1/me', {
+      const response = await httpClient.fetch('/me', {
         method: 'PATCH',
         body: formData,
         headers: {
-          Authorization: `Bearer ${token}`, // Include your auth token if needed
+          Authorization: `Bearer ${token}`,
         },
       });
 

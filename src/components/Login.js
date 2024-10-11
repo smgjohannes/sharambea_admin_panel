@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 import validation from './functions/LoginValidation';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { HttpClient } from '../utils/HttpClient';
+import { Token } from '../utils/Token';
 
 function Login() {
   const [values, setValues] = useState({ email: '', password: '' });
@@ -18,19 +19,20 @@ function Login() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const httpClient = new HttpClient();
+    const token = new Token();
     const validationErrors = validation(values);
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length === 0) {
       try {
-        const response = await axios.post(
-          'http://127.0.0.1:4343/api/v1/login',
-          values
-        );
+        const response = await httpClient.post('/login', values);
         if (response.data.success) {
           const user = response.data.user;
-          const token = response.data.token.access_token;
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(user));
+          const accessToken = response.data.token.access_token;
+          const newUser = Object.assign({}, user, {
+            access_token: accessToken,
+          });
+          token.saveUser(newUser);
           navigate('/dashboard');
         } else {
           setErrors({ server: response.data.message });

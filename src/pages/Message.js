@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import { formatDateTime } from '../components/CommonFunctions';
 import MessageModal from '../components/MessageModal';
 import '../styles/Message.css';
+import { HttpClient } from '../utils/HttpClient';
 
 const Message = () => {
   const [interestedBuyer, setInterestedBuyer] = useState([]);
@@ -10,13 +11,14 @@ const Message = () => {
   const [selectedMessage, setSelectedMessage] = useState(null);
 
   useEffect(() => {
+    const httpClient = new HttpClient();
     const fetchInterestedBuyer = async () => {
       try {
         const token = localStorage.getItem('token');
         const queryParams =
           property_type !== 'all' ? `?property_type=${property_type}` : '';
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/interestedBuyer${queryParams}`,
+        const response = await httpClient.get(
+          `/interestedBuyer${queryParams}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -41,9 +43,10 @@ const Message = () => {
   };
 
   const handleDelete = async (id) => {
+    const httpClient = new HttpClient();
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://127.0.0.1:4343/api/v1/interestedBuyer/${id}`, {
+      await httpClient.delete(`/interestedBuyer/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setInterestedBuyer(interestedBuyer.filter((buyer) => buyer.id !== id));

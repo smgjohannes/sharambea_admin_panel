@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
 import PropertyCard from './PropertyCard';
 import PropertyModal from './PropertyModal';
 
 import '../styles/Advertisement.css';
+import { HttpClient } from '../utils/HttpClient';
 
 const Advertisement = () => {
   const [properties, setProperties] = useState([]);
@@ -12,18 +13,15 @@ const Advertisement = () => {
 
   useEffect(() => {
     const fetchProperties = async () => {
+      const httpClient = new HttpClient();
       try {
-        const token = localStorage.getItem('token'); // Retrieve the token from storage
-        const response = await axios.get(
-          'http://127.0.0.1:4343/api/v1/properties',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Set the authorization header
-            },
-          }
-        );
-        console.log(response.data);
-        setProperties(response.data); // Set the properties state with the fetched data
+        const token = localStorage.getItem('token');
+        const response = await httpClient.get('/properties', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setProperties(response.data);
       } catch (error) {
         console.error('Error fetching properties:', error.response.data);
       }
@@ -33,11 +31,12 @@ const Advertisement = () => {
   }, []);
 
   const handleDelete = async (id) => {
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://127.0.0.1:4343/api/v1/properties/${id}`, {
+      await httpClient.delete(`/properties/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Set the authorization header
+          Authorization: `Bearer ${token}`,
         },
       });
       setProperties(properties.filter((property) => property.id !== id));
@@ -47,22 +46,22 @@ const Advertisement = () => {
   };
 
   const handleAddProperty = () => {
-    setSelectedProperty(null); // Clear selected property
-    setShowModal(true); // Open modal
+    setSelectedProperty(null);
+    setShowModal(true);
   };
 
   const handleEditProperty = (property) => {
-    setSelectedProperty(property); // Set the property to be edited
-    setShowModal(true); // Open modal
+    setSelectedProperty(property);
+    setShowModal(true);
   };
 
   const handleModalClose = () => {
-    setShowModal(false); // Close modal
+    setShowModal(false);
   };
 
   const handleFormSubmit = async (property) => {
     const token = localStorage.getItem('token');
-
+    const httpClient = new HttpClient();
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -70,10 +69,9 @@ const Advertisement = () => {
     };
 
     if (selectedProperty) {
-      // Update logic
       try {
-        const response = await axios.put(
-          `http://127.0.0.1:4343/api/v1/properties/${selectedProperty.id}`,
+        const response = await httpClient.post(
+          `/${selectedProperty.id}`,
           property,
           config
         );
@@ -86,20 +84,15 @@ const Advertisement = () => {
         console.error('Error updating property', error);
       }
     } else {
-      // Add logic
       try {
-        const response = await axios.post(
-          'http://127.0.0.1:4343/api/v1/properties',
-          property,
-          config
-        );
+        const response = await httpClient.post('/properties', property, config);
         setProperties([...properties, response.data]);
       } catch (error) {
         console.error('Error adding property', error);
       }
     }
 
-    setShowModal(false); // Close modal
+    setShowModal(false);
   };
 
   return (

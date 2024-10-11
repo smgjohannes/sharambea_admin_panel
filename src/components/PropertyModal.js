@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/AddEditFormProperty.css';
-import axios from 'axios';
+import { HttpClient } from '../utils/HttpClient';
 
 const PropertyModal = ({ show, onClose, onSubmit, propertyData }) => {
   const [property, setProperty] = useState(propertyData || {});
@@ -60,6 +60,7 @@ const PropertyModal = ({ show, onClose, onSubmit, propertyData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const httpClient = new HttpClient();
     const token = localStorage.getItem('token');
 
     const formData = new FormData();
@@ -81,17 +82,13 @@ const PropertyModal = ({ show, onClose, onSubmit, propertyData }) => {
     try {
       let response;
       if (propertyData && propertyData.id) {
-        response = await axios.patch(
-          `http://127.0.0.1:4343/api/v1/properties/${propertyData.id}`,
+        response = await httpClient.patch(
+          `/properties/${propertyData.id}`,
           formData,
           { headers }
         );
       } else {
-        response = await axios.post(
-          'http://127.0.0.1:4343/api/v1/properties',
-          formData,
-          { headers }
-        );
+        response = await httpClient.post('/properties', formData, { headers });
       }
 
       if (response.status === 200 || response.status === 201) {

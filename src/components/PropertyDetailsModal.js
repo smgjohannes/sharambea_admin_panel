@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import axios from 'axios';
+
 import '../styles/PropertyDetailsModal.css';
+import { HttpClient } from '../utils/HttpClient';
 
 const PropertyDetailsModal = ({ show, onClose, property }) => {
   useEffect(() => {
+    const httpClient = new HttpClient();
     if (!show || !property) return;
     const token = localStorage.getItem('token');
     const interestedBuyers = async () => {
       try {
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/properties/${property.id}/interestedBuyer`,
+        const response = await httpClient.get(
+          `/properties/${property.id}/interestedBuyer`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

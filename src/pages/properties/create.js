@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
 import '../../styles/FormProperty.css';
+import { HttpClient } from '../../utils/HttpClient';
 
 const CreateProperty = () => {
   const initialState = {
@@ -69,6 +70,7 @@ const CreateProperty = () => {
   };
 
   const handleSubmit = async (e) => {
+    const httpClient = new HttpClient();
     e.preventDefault();
     const token = localStorage.getItem('token');
     const formData = new FormData();
@@ -82,16 +84,12 @@ const CreateProperty = () => {
     });
 
     try {
-      const response = await axios.post(
-        'http://127.0.0.1:4343/api/v1/properties',
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      const response = await httpClient.post('/properties', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (response.status === 201) {
         setIsSubmitted(true);
         alert('Form submitted successfully!');
