@@ -13,12 +13,12 @@ const PropertyCard = ({ property, onDelete }) => {
   };
 
   const handleView = () => {
-    navigate(`/view/${property.id}`); // Navigate to view page
+    navigate(`/view/${property.id}`); 
     setMenuOpen(false);
   };
 
   const handleEdit = () => {
-    navigate(`/edit/${property.id}`); // Navigate to edit page
+    navigate(`/edit/${property.id}`); 
     setMenuOpen(false);
   };
 

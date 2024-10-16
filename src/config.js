@@ -8,7 +8,7 @@ let config = {
   },
 
   production: {
-    homeUrl: 'http://admin.sharambeaprop.com',
+    homeUrl: 'https://admin.sharambeaprop.com',
     baseUrl: 'https://sharambeaapi-3cdb242a1398.herokuapp.com/api/v1',
   },
 };

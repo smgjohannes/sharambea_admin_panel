@@ -50,7 +50,7 @@ const Navbar = ({ toggleSidebar }) => {
             alt='User Avatar'
             className='avatar'
           /> */}
-          <p>Welcome, {userName}</p>
+          <p>Welcome, {userName.name}</p>
         </i>
       </div>
     </nav>

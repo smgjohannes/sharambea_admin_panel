@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../styles/ViewProperty.css';
 import PropertyDetailsModal from '../../components/PropertyDetailsModal';
 import MessageModal from '../../components/MessageModal';
 import { formatDateTime } from '../../components/CommonFunctions';
 import { FaTrash } from 'react-icons/fa';
+import { HttpClient } from '../../utils/HttpClient';
 
 const ViewProperty = () => {
   const { propertyId } = useParams();
@@ -18,11 +19,12 @@ const ViewProperty = () => {
 
   // Fetch property data
   useEffect(() => {
+    const httpClient = new HttpClient();
     const fetchProperty = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/properties/${propertyId}`,
+        const response = await httpClient.get(
+          `/properties/${propertyId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setProperty(response.data);
@@ -32,10 +34,11 @@ const ViewProperty = () => {
     };
 
     const fetchBuyers = async () => {
+      const httpClient = new HttpClient();
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(
-          `http://127.0.0.1:4343/api/v1/properties/${propertyId}/interestedBuyer`,
+        const response = await httpClient.get(
+          `/properties/${propertyId}/interestedBuyer`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setBuyers(response.data);
@@ -62,15 +65,16 @@ const ViewProperty = () => {
   };
 
   const handleDeleteBuyer = async (buyerId, event) => {
-    event.stopPropagation(); // Prevent the row click event from firing
+    event.stopPropagation(); 
+    const httpClient = new HttpClient();
     const confirmDelete = window.confirm(
       'Are you sure you want to delete this buyer?'
     );
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(
-          `http://127.0.0.1:4343/api/v1/properties/${propertyId}/interestedBuyer/${buyerId}`,
+        await httpClient.delete(
+          `/properties/${propertyId}/interestedBuyer/${buyerId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

@@ -42,7 +42,7 @@ const RequestModal = ({ isOpen, onRequestClose, request }) => {
               <strong>Date:</strong> {formatDateTime(request.created_at)}
             </p>
             <p>
-              <strong>Price:</strong> N${request.price}
+              <strong>Price:</strong> N$ {request.price}
             </p>
           </div>
 

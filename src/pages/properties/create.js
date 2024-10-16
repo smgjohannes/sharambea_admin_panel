@@ -166,13 +166,17 @@ const CreateProperty = () => {
             ])}
           </div>
           <div className='w3-row-padding'>
-            <label>Property Description</label>
-            <textarea
-              className='w3-input'
-              name='description'
-              value={property.description}
-              onChange={handleChange}></textarea>
-          </div>
+  <label>Property Description</label>
+  <textarea
+    className='w3-input'
+    name='description'
+    value={property.description}
+    onChange={handleChange}
+    placeholder="Enter property details, press Enter for a new line"
+    rows="5"
+  ></textarea>
+</div>
+
         </div>
 
         {/* Property Features */}

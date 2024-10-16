@@ -12,15 +12,6 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
   const [counts, setCounts] = useState({ newRequests: 0, unreadMessages: 0 });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Fetch notification counts from the backend
-    fetch('/api/notifications/counts')
-      .then((response) => response.json())
-      .then((data) => setCounts(data))
-      .catch((error) =>
-        console.error('Error fetching notification counts:', error)
-      );
-  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -56,7 +47,8 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
             Listings Requests{' '}
             <span className='request-count'>{counts.newRequests}</span>
           </Link>
-        </li>
+          </li>
+        {/* 
         <li>
           <Link to='/message' onClick={closeSidebar}>
             <span className='icon'>
@@ -73,7 +65,7 @@ const Sidebar = ({ sidebarOpen, closeSidebar }) => {
             </span>{' '}
             Edit Profile
           </Link>
-        </li>
+        </li> */}
       </ul>
       <div className='logout'>
         <button className='logout-button' onClick={handleLogout}>
